@@ -7,6 +7,7 @@ import (
 	"Open_IM/pkg/common/kafka"
 	"Open_IM/pkg/common/log"
 	promePkg "Open_IM/pkg/common/prometheus"
+	"Open_IM/pkg/common/redismq"
 	"Open_IM/pkg/grpc-etcdv3/getcdv3"
 	"Open_IM/pkg/proto/msg"
 	"Open_IM/pkg/utils"
@@ -29,6 +30,7 @@ type rpcChat struct {
 	etcdSchema      string
 	etcdAddr        []string
 	messageWriter   MessageWriter
+	messageWriter2  MessageWriter
 	//offlineProducer *kafka.Producer
 	delMsgCh chan deleteMsg
 }
@@ -49,6 +51,7 @@ func NewRpcChatServer(port int) *rpcChat {
 		etcdAddr:        config.Config.Etcd.EtcdAddr,
 	}
 	rc.messageWriter = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschat.Addr, config.Config.Kafka.Ws2mschat.Topic)
+	rc.messageWriter2 = redismq.NewProducer()
 	//rc.offlineProducer = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschatOffline.Addr, config.Config.Kafka.Ws2mschatOffline.Topic)
 	rc.delMsgCh = make(chan deleteMsg, 1000)
 	return &rc

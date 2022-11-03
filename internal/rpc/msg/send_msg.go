@@ -575,6 +575,7 @@ func (rpc *rpcChat) sendMsgToWriter(m *pbChat.MsgDataToMQ, key string, status st
 			}
 		}
 		pid, offset, err := rpc.messageWriter.SendMessage(m, key, m.OperationID)
+		rpc.messageWriter2.SendMessage(m, key, m.OperationID)
 		if err != nil {
 			log.Error(m.OperationID, "kafka send failed", "send data", m.String(), "pid", pid, "offset", offset, "err", err.Error(), "key", key, status)
 		} else {
