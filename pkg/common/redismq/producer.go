@@ -32,7 +32,6 @@ func (p *Producer) SendMessage(m proto.Message, key string, operationID string) 
 	bytes, _ := pop.Bytes()
 	msgFromMQ := pbChat.PushMsgDataToMQ{}
 	if err := proto.Unmarshal(bytes, &msgFromMQ); err != nil {
-		log.Error("", "push Unmarshal msg err", "msg", string(msg), "err", err.Error())
 	}
 	pb2String, _ := utils.Pb2String(m)
 	log.Info("senddebug ", pb2String)
